@@ -1,4 +1,4 @@
 const Admin = require("./admin.route")
 const Student = require("./student.route")
-
-module.exports = [Admin,Student]
+const Group = require("./group.route")
+module.exports = [Admin,Student, Group]
