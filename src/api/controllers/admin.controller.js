@@ -44,7 +44,7 @@ const login = async (req, res) => {
     if (!compare) {
       return res.status(404).json({ message: "Passwords do not match" });
     }
-    const token = jwt.sign({ userId: findAdmin.id });
+    const token = jwt.sign({ userId: findAdmin[0].id });
 
     res.cookie("token", token);
 

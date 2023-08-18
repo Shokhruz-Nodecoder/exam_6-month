@@ -10,6 +10,14 @@ const create = async (req, res) => {
   res.status(201).json({ msg: "Success" });
 };
 
+const getGroups = async (req, res) => {
+  try {
+    const groups = await Groups.findAll();
+    res.status(200).json({ message: "Success", groups });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 const addStudent = async (req, res) => {
   try {
     const { group_id } = req.params;
@@ -53,4 +61,4 @@ const getGroupStudents = async (req, res) => {
   }
 };
 
-module.exports = { create, addStudent, getGroupStudents };
+module.exports = { create, addStudent, getGroupStudents, getGroups };

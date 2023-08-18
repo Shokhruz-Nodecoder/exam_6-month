@@ -1,15 +1,29 @@
 const jwt = require("../../libs/jwt");
 const cookie = require("cookie-parser");
+const Admins = require("../../models/admin.model");
 
-const isAdmin = (req, res, next) => {
+const isAdmin = async (req, res, next) => {
   try {
     const { token } = req.cookies;
-
     if (!token) return res.status(403).json({ message: "Invalid token" });
+    const adminId = jwt.verify(token);
+    if (adminId.userId == undefined) {
+      return res.status(404).json({ message: "Not access to you" });
+    }
+    const admin = await Admins.findAll(
+      {
+        where: {
+          id: adminId.userId,
+        },
+      },
+      {
+        logging: false,
+      }
+    );
 
-    const verify = jwt.verify(token);
+    if (!admin) return res.status(403).json({ message: "Not allowed" });
 
-    req.user = verify;
+    req.admin = admin;
 
     next();
   } catch (error) {
