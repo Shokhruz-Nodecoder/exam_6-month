@@ -10,10 +10,6 @@ Exams.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    group_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     start_date: {
       type: DataTypes.DATE(),
       allowNull: false,

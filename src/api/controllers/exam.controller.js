@@ -40,13 +40,20 @@ const getExams = async (req, res) => {
   }
 };
 
+const getOneExam = async (req, res) => {
+  try {
+    const { exam_id } = req.params;
+    const exam = await Exams.findByPk(exam_id, { include: [Groups] });
+    console.log(exam)
+    res.json({ message: "Success", exam });
+  } catch (error) {
+    res.status(403).json({ message: error.message });
+  }
+};
 
+const sendExams = async (req, res) => {
+  const { group_id } = req.params;
+  const {} = req.body;
+};
 
-
-// const sendExams = async (req,res) =>{
-//     const {group_id} = req.params
-//     const {} = req.body
-// }
-
-
-module.exports = { create, getExams };
+module.exports = { create, getExams, getOneExam };
