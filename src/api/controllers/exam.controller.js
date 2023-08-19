@@ -3,6 +3,8 @@ const Groups = require("../../models/group.model");
 const Tasks = require("../../models/task.model");
 const { v4: uuid } = require("uuid");
 const path = require("path");
+const Students = require("../../models/student.model");
+const Marks = require("../../models/mark.model");
 const create = async (req, res) => {
   try {
     const { task, duration } = req.body;
@@ -129,6 +131,34 @@ const getTasks = async (req, res) => {
   }
 };
 
+
+const checkUp = async (req, res) => {
+  const { id } = req.params; // student id keladi
+  const { exam_id, mark } = req.body;
+  const findStudent = await Students.findByPk(id, { logging: false });
+  if (findStudent !== null) {
+    const results = await Marks.create({
+      exam_id,
+      mark,
+      student_id: findStudent.id,
+    });
+    res.status(201).json({ message: "Success", results });
+  } else {
+    res.status(404).json({ message: "Student not found" });
+  }
+};
+
+
+const getCheckUps = async (req, res) => {
+  try {
+    const { id } = req.params; //Marksni id si
+    const data = await Marks.findByPk(id, { include: [Students], logging: false });
+
+    res.status(200).json({ message: "Success", data });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 module.exports = {
   create,
   getExams,
@@ -136,4 +166,6 @@ module.exports = {
   sendExam,
   getOneTask,
   getTasks,
+  checkUp,
+  getCheckUps
 };
